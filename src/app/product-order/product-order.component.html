@@ -1,0 +1,54 @@
+<div class="container">
+  <table>
+    <thead>
+      <tr>
+        <th>Product Name</th>
+        <th>Quantity</th>
+        <th></th> <!-- Empty column for the "Add" button -->
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let row of rows; let i = index">
+        <td>
+          <select [(ngModel)]="row.product" (change)="onProductChange(i)" [disabled]="row.disabled">
+            <option value="">Choose Product</option>
+            <option *ngFor="let product of products" [value]="product">{{ product }}</option>
+          </select>
+        </td>
+        <td>
+          <select [(ngModel)]="row.quantity" [disabled]="!row.product || row.disabled">
+            <option value="">Choose Quantity</option>
+            <option *ngFor="let qty of quantities" [value]="qty">{{ qty }}</option>
+          </select>
+        </td>
+        <td>
+          <button (click)="addToOrder(i)" [disabled]="row.disabled">Add</button> <!-- Add button for each row -->
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <button (click)="addRow()">Add Row</button>
+  <button (click)="showOrder()">Show Order</button>
+
+  <!-- Grid 2: Order Summary -->
+  <div *ngIf="showOrderSummary">
+    <h3>Order Summary</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Product Name</th>
+          <th>Quantity</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let order of orderRows">
+          <td>{{ order.product }}</td>
+          <td>{{ order.quantity }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Button to read out the order -->
+  <button *ngIf="showOrderSummary" (click)="speakOrder()">What is my Order?</button>
+</div>
